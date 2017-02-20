@@ -10,7 +10,7 @@ check: build
 	$(MAKE) -f $(TOP)/Makefile SRCDIR='$(SRCDIR)' CSRCS='$(CSRCS)' TARGET='$(TARGET)' INTERFACE='$(INTERFACE)' fortran_run
 
 build:
-	$(MAKE) -f $(TOP)/Makefile SRCDIR='$(SRCDIR)' CSRCS='$(CSRCS)' \
+	$(MAKE) -f $(TOP)/Makefile SRCDIR='$(SRCDIR)' SRCS='$(CSRCS)' \
 	SWIG_LIB_DIR='$(SWIG_LIB_DIR)' SWIGEXE='$(SWIGEXE)' \
 	TARGET='$(TARGET)' INTERFACE='$(INTERFACE)' fortran
 	$(MAKE) -f $(TOP)/Makefile SRCDIR='$(SRCDIR)'  \
