@@ -13,10 +13,11 @@ module stdvec
  public :: make_const_viewdbl
  public :: print_viewdbl
  public :: print_viewptr
+ public :: make_viewptr
  ! TYPES
  type, public, bind(C) :: ArrayWrapper
    type(C_PTR), public :: data
-   integer(C_INT), public :: size
+   integer(C_SIZE_T), public :: size
  end type
  
  type :: VecDbl
@@ -233,6 +234,14 @@ module stdvec
    import :: ArrayWrapper
    type(ArrayWrapper) :: farg1
   end subroutine
+  function swigc_make_viewptr(farg1) &
+     bind(C, name="swigc_make_viewptr") &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   import :: ArrayWrapper
+   type(ArrayWrapper) :: fresult
+   type(C_PTR), value :: farg1
+  end function
  end interface
 
 contains
@@ -433,4 +442,13 @@ contains
    temp%size = size(ptr)
    call swigc_print_viewptr(temp)
   end subroutine
+  function make_viewptr(v) &
+     result(fresult)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), pointer :: fresult(:)
+   class(VecDbl) :: v
+   type(ArrayWrapper) :: temp
+   temp = swigc_make_viewptr(v%swigptr)
+   call c_f_pointer(temp%data, fresult, [temp%size])
+  end function
 end module stdvec

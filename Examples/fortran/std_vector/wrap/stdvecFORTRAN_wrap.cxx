@@ -214,7 +214,7 @@ void array_size_check(size_t src, size_t dst)
 struct ArrayWrapper
 {
     void* data;
-    int   size;
+    std::size_t size;
 };
 }
 
@@ -533,6 +533,16 @@ SWIGEXPORT void swigc_print_viewptr( swig::ArrayWrapper* farg1 ) {
   const double* end = begin + farg1->size;
   arg1 = VectorView< double const >(begin, end);
   print_view< double >(arg1);
+}
+
+SWIGEXPORT swig::ArrayWrapper swigc_make_viewptr(const void* farg1 ) {
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  swig::ArrayWrapper result;
+
+  arg1 = (std::vector< double,std::allocator< double > > *)(farg1);
+  result.data = arg1->data();
+  result.size = arg1->size();
+  return result;
 }
 
 
