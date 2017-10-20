@@ -77,13 +77,6 @@ void print_vec(const std::vector<T>& v);
 
 //---------------------------------------------------------------------------//
 template<class T>
-void print_view(VectorView<T> view)
-{
-    print_view(VectorView<const T>(view));
-}
-
-//---------------------------------------------------------------------------//
-template<class T>
 void print_view(VectorView<const T> view);
 
 //---------------------------------------------------------------------------//

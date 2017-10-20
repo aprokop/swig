@@ -16,8 +16,9 @@
 %include <std_vector.i>
 %template(VecDbl) std::vector<double>;
 
-%include "stdvec.hh"
-
+//---------------------------------------------------------------------------//
+// Instantiate a view template and add a "view" method.
+//---------------------------------------------------------------------------//
 %define TEMPLATE_VIEW(FCLASSNAME, TYPE, FTYPE)
 
 %extend VectorView<TYPE>
@@ -33,20 +34,21 @@
    call c_f_pointer(c_loc(temp), fresult, [self%size()])
   end function
 %}
-%fortranspec %{procedure :: view => FCLASSNAME##_view
-%}
+%fortranspec %{  procedure :: view => FCLASSNAME##_view %}
 }
 
 %template(FCLASSNAME) VectorView<TYPE>;
 %enddef
+//---------------------------------------------------------------------------//
 
-TEMPLATE_VIEW(VecViewDbl, double, C_DOUBLE)
+%include "stdvec.hh"
+
 TEMPLATE_VIEW(const_VecViewDbl, const double, C_DOUBLE)
 
-%template(make_viewdbl) make_view<double>;
+//---------------------------------------------------------------------------//
+
 %template(make_const_viewdbl) make_const_view<double>;
 %template(print_viewdbl) print_view<double>;
-%template(print_vecdbl)  print_vec<double>;
 
 //---------------------------------------------------------------------------//
 // end of std_vector/stdvec.i
