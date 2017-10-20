@@ -10,7 +10,8 @@ program main
     use ISO_FORTRAN_ENV
     use, intrinsic :: ISO_C_BINDING
     use stdvec, only : make_const_view => make_const_viewdbl, &
-        print_view => print_viewdbl, const_VecViewDbl, VecDbl
+        print_view => print_viewdbl, const_VecViewDbl, VecDbl, &
+        print_viewptr
     implicit none
     type(VecDbl) :: v
     type(const_VecViewDbl) :: cview
@@ -40,6 +41,9 @@ program main
 
     vptr => cview%view()
     write(0, *) "pointer:", vptr
+
+    write(0, *) "Printing from array pointer"
+    call print_viewptr(vptr)
 
     write(0, *) "Destroying..."
     call v%release()
