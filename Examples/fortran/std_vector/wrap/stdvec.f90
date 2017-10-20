@@ -12,7 +12,13 @@ module stdvec
  public :: const_VecViewDbl
  public :: make_const_viewdbl
  public :: print_viewdbl
+ public :: print_viewptr
  ! TYPES
+ type, public, bind(C) :: ArrayWrapper
+   type(C_PTR), public :: data
+   integer(C_INT), public :: size
+ end type
+ 
  type :: VecDbl
   ! These should be treated as PROTECTED data
   type(C_PTR), public :: swigptr = C_NULL_PTR
@@ -221,6 +227,12 @@ module stdvec
    use, intrinsic :: ISO_C_BINDING
    type(C_PTR), value :: farg1
   end subroutine
+  subroutine swigc_print_viewptr(farg1) &
+     bind(C, name="swigc_print_viewptr")
+   use, intrinsic :: ISO_C_BINDING
+   import :: ArrayWrapper
+   type(ArrayWrapper) :: farg1
+  end subroutine
  end interface
 
 contains
@@ -412,5 +424,13 @@ contains
    use, intrinsic :: ISO_C_BINDING
    type(const_VecViewDbl) :: view
    call swigc_print_viewdbl(view%swigptr)
+  end subroutine
+  subroutine print_viewptr(ptr)
+   use, intrinsic :: ISO_C_BINDING
+   real(C_DOUBLE), pointer :: ptr(:)
+   type(ArrayWrapper) :: temp
+   temp%data = c_loc(ptr)
+   temp%size = size(ptr)
+   call swigc_print_viewptr(temp)
   end subroutine
 end module stdvec

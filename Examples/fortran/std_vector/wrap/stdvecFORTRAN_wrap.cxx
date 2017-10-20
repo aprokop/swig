@@ -211,6 +211,11 @@ void array_size_check(size_t src, size_t dst)
         throw std::range_error(os.str());
     }
 }
+struct ArrayWrapper
+{
+    void* data;
+    int   size;
+};
 }
 
 
@@ -518,6 +523,15 @@ SWIGEXPORT void swigc_print_viewdbl(void* farg1) {
   VectorView< double const > arg1 ;
   
   arg1 = *(VectorView< double const > *)(farg1);
+  print_view< double >(arg1);
+}
+
+SWIGEXPORT void swigc_print_viewptr( swig::ArrayWrapper* farg1 ) {
+  VectorView< double const > arg1 ;
+
+  const double* begin = static_cast<const double*>(farg1->data);
+  const double* end = begin + farg1->size;
+  arg1 = VectorView< double const >(begin, end);
   print_view< double >(arg1);
 }
 
